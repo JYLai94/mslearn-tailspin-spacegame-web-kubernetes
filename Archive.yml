@@ -1,0 +1,43 @@
+trigger: none
+
+variables:
+  buildConfiguration: 'Release'
+  webRepository: 'web'
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: 'Archive'
+  displayName: 'Archive customization files'
+  jobs:  
+  - job: 'Archive'
+    displayName: 'Archive job'
+    pool:
+      vmImage: 'ubuntu-20.04'
+    steps:
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.BinariesDirectory)'
+        includeRootFolder: true
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        replaceExistingArchive: true
+
+- stage: 'Copy file'
+  displayName: 'Copy file over SSH'
+  dependsOn: Archive
+  jobs:
+  - job: 'Copy file'
+    displayName: 'Copy file job'
+    pool:
+      vmImage: 'ubuntu-20.04'
+    variables:
+    - group: Release
+    steps:
+    - task: cURLUploader@2
+      inputs:
+        files: '**/*.zip'
+        authType: 'UserAndPass'
+        username: 'JYLai94'
+        password: 'Lee19940816'
+        url: 'https://github.com/JYLai94/mslearn-tailspin-spacegame-web-kubernetes.git'
+
