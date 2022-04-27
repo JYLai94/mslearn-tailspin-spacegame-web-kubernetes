@@ -22,11 +22,11 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         replaceExistingArchive: true
 
-- stage: 'Copy file'
+- stage: 'CopyFile'
   displayName: 'Copy file over SSH'
   dependsOn: Archive
   jobs:
-  - job: 'Copy file'
+  - job: 'CopyFile'
     displayName: 'Copy file job'
     pool:
       vmImage: 'ubuntu-20.04'
