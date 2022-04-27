@@ -3,7 +3,6 @@ trigger: none
 variables:
   buildConfiguration: 'Release'
   webRepository: 'web'
-  tag: '$(Build.BuildId)'
 
 stages:
 - stage: 'Archive'
@@ -19,7 +18,7 @@ stages:
         rootFolderOrFile: '$(Build.BinariesDirectory)'
         includeRootFolder: true
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/Testing.zip'
         replaceExistingArchive: true
 
 - stage: 'CopyFile'
